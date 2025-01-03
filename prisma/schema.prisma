@@ -19,6 +19,7 @@ model User {
   email     String    @unique
   password  String
   name      String?
+  token    String? 
   projects  Project[]
   tasks     Task[]
   createdAt DateTime  @default(now())

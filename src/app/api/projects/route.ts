@@ -1,34 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
-import { getUserFromToken } from '@/lib/auth'
 
 const prisma = new PrismaClient()
 
 export async function GET(request: NextRequest) {
-  const user = await getUserFromToken(request)
-  if (!user) {
+  const searchParams = request.nextUrl.searchParams
+  const userId = searchParams.get('userId')
+  if (!userId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const projects = await prisma.project.findMany({
-    where: { userId: user.id },
+    where: { userId: userId },
   })
+  
   return NextResponse.json(projects)
 }
 
 export async function POST(request: NextRequest) {
-  const user = await getUserFromToken(request)
-  if (!user) {
+  const body = await request.json()
+  const { userId, ...projectData } = body
+  
+  if (!userId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const body = await request.json()
   const project = await prisma.project.create({
     data: {
-      ...body,
-      userId: user.id,
+      ...projectData,
+      userId: userId,
     },
   })
+  
   return NextResponse.json(project)
 }
-
