@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Trash2 } from 'lucide-react'
+import { Eye, EyeClosed, Trash2 } from 'lucide-react'
 
 type Task = {
   id: string
@@ -42,6 +42,7 @@ export default function TaskManager() {
   const [user, setUser] = useState<User | null>(null)
   const [loginForm, setLoginForm] = useState({ email: '', password: '' })
   const [signupForm, setSignupForm] = useState({ email: '', password: '', name: '' })
+  const [showPassword, setShowPassword] = useState(false)
 
   useEffect(() => {
     if (user) {
@@ -201,17 +202,27 @@ export default function TaskManager() {
                 <label htmlFor="password" className="sr-only">
                   Password
                 </label>
+                <div className='relative'>
                 <Input
                   id="password"
                   name="password"
-                  type="password"
-                  autoComplete="current-password"
+                  type={showPassword?"text":"password"}
+                  autoComplete="none"
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Password"
                   value={loginForm.password}
                   onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
                 />
+                <button 
+                 
+                  className="absolute right-2 top-2.5"
+                  onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword?<EyeClosed className="bg-transparent h-4 w-4"/>:<Eye className="bg-transparent h-4 w-4"/>}
+                </button>
+                </div>
+                
               </div>
             </div>
 
@@ -225,7 +236,7 @@ export default function TaskManager() {
             </div>
           </form>
 
-          <div className="mt-6">
+          {/* <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-300" />
@@ -296,7 +307,7 @@ export default function TaskManager() {
                 </Button>
               </div>
             </form>
-          </div>
+          </div> */}
         </div>
       </div>
     )
