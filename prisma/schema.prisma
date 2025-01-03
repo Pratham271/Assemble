@@ -14,12 +14,25 @@ datasource db {
 }
 
 
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  password  String
+  name      String?
+  projects  Project[]
+  tasks     Task[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
 model Project {
   id        String   @id @default(cuid())
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   tasks     Task[]
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Task {
@@ -32,4 +45,6 @@ model Task {
   updatedAt   DateTime @updatedAt
   projectId   String
   project     Project  @relation(fields: [projectId], references: [id])
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
 }

@@ -1,14 +1,20 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
+import { getUserFromToken } from '@/lib/auth'
 
 const prisma = new PrismaClient()
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
+  const user = await getUserFromToken(request)
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const { searchParams } = new URL(request.url)
   const date = searchParams.get('date')
   const projectId = searchParams.get('projectId')
 
-  let whereClause: any = {}
+  let whereClause: any = { userId: user.id }
 
   if (date) {
     const startDate = new Date(date)
@@ -34,10 +40,18 @@ export async function GET(request: Request) {
   return NextResponse.json(tasks)
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+  const user = await getUserFromToken(request)
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const body = await request.json()
   const task = await prisma.task.create({
-    data: body,
+    data: {
+      ...body,
+      userId: user.id,
+    },
   })
   return NextResponse.json(task)
 }
