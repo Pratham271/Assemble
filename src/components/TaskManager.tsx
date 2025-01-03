@@ -1,12 +1,12 @@
 'use client'
-
+/* eslint-disable */
 import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
 import { Calendar } from '@/components/ui/calendar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+
 import { Eye, EyeClosed, Trash2 } from 'lucide-react'
 
 type Task = {
@@ -41,15 +41,10 @@ export default function TaskManager() {
   const [selectedProject, setSelectedProject] = useState<string | null>(null)
   const [user, setUser] = useState<User | null>(null)
   const [loginForm, setLoginForm] = useState({ email: '', password: '' })
-  const [signupForm, setSignupForm] = useState({ email: '', password: '', name: '' })
+  // const [signupForm, setSignupForm] = useState({ email: '', password: '', name: '' })
   const [showPassword, setShowPassword] = useState(false)
 
-  useEffect(() => {
-    if (user) {
-      fetchTasks()
-      fetchProjects()
-    }
-  }, [selectedDate, selectedProject, user])
+ 
 
   const fetchTasks = async () => {
     if (!user) return
@@ -71,6 +66,13 @@ export default function TaskManager() {
     }
   }
 
+  useEffect(() => {
+    if (user) {
+      fetchTasks()
+      fetchProjects()
+    }
+  }, [selectedDate, selectedProject, user])
+  
   const addTask = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!newTask.title || !selectedProject || !user) return
@@ -124,6 +126,9 @@ export default function TaskManager() {
     if (!user) return
     const res = await fetch(`/api/tasks/${taskId}`, {
       method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
 
     if (res.ok) {
@@ -148,22 +153,22 @@ export default function TaskManager() {
     }
   }
 
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const res = await fetch('/api/auth/signup', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(signupForm),
-    })
+  // const handleSignup = async (e: React.FormEvent) => {
+  //   e.preventDefault()
+  //   const res = await fetch('/api/auth/signup', {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify(signupForm),
+  //   })
 
-    if (res.ok) {
-      const data = await res.json()
-      setUser(data)
-      setSignupForm({ email: '', password: '', name: '' })
-    } else {
-      alert('Signup failed')
-    }
-  }
+  //   if (res.ok) {
+  //     const data = await res.json()
+  //     setUser(data)
+  //     setSignupForm({ email: '', password: '', name: '' })
+  //   } else {
+  //     alert('Signup failed')
+  //   }
+  // }
 
   const handleLogout = () => {
     setUser(null)

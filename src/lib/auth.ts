@@ -13,6 +13,7 @@ export async function getUserFromToken(request: NextRequest) {
     const user = await prisma.user.findUnique({ where: { id: decoded.userId } })
     return user
   } catch (error) {
+    console.log(error)
     return null
   }
 }
