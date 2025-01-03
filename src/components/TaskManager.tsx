@@ -1,13 +1,12 @@
 'use client'
-/* eslint-disable */
 import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
 import { Calendar } from '@/components/ui/calendar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
-
-import { Eye, EyeClosed, Trash2 } from 'lucide-react'
+import { Eye, EyeClosed, Trash2, ChevronDown, ChevronUp } from 'lucide-react'
 
 type Task = {
   id: string
@@ -41,11 +40,31 @@ export default function TaskManager() {
   const [selectedProject, setSelectedProject] = useState<string | null>(null)
   const [user, setUser] = useState<User | null>(null)
   const [loginForm, setLoginForm] = useState({ email: '', password: '' })
-  // const [signupForm, setSignupForm] = useState({ email: '', password: '', name: '' })
   const [showPassword, setShowPassword] = useState(false)
+  const [expandedTasks, setExpandedTasks] = useState<string[]>([])
 
- 
+  // Toggle task expansion
+  const toggleTaskExpansion = (taskId: string) => {
+    setExpandedTasks(prev => 
+      prev.includes(taskId) 
+        ? prev.filter(id => id !== taskId)
+        : [...prev, taskId]
+    )
+  }
 
+  // Format description to handle bullet points
+  const formatDescription = (description: string) => {
+    return description.split('\n').map((line, index) => {
+      const bulletPoint = line.trim().startsWith('•') || line.trim().startsWith('-')
+      return (
+        <div key={index} className={`${bulletPoint ? 'ml-4' : ''}`}>
+          {line}
+        </div>
+      )
+    })
+  }
+
+  // Rest of the fetch functions remain the same
   const fetchTasks = async () => {
     if (!user) return
     const date = selectedDate ? format(selectedDate, 'yyyy-MM-dd') : ''
@@ -72,7 +91,8 @@ export default function TaskManager() {
       fetchProjects()
     }
   }, [selectedDate, selectedProject, user])
-  
+
+  // Modified addTask to handle bullet points
   const addTask = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!newTask.title || !selectedProject || !user) return
@@ -93,22 +113,7 @@ export default function TaskManager() {
     }
   }
 
-  const addProject = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!newProject.name || !user) return
-
-    const res = await fetch('/api/projects', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newProject),
-    })
-
-    if (res.ok) {
-      setNewProject({ name: '' })
-      fetchProjects()
-    }
-  }
-
+  // Rest of the handler functions remain the same
   const toggleTaskCompletion = async (taskId: string, completed: boolean) => {
     if (!user) return
     const res = await fetch(`/api/tasks/${taskId}`, {
@@ -122,13 +127,30 @@ export default function TaskManager() {
     }
   }
 
+
+
+  const addProject = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!newProject.name || !user) return
+    const res = await fetch('/api/projects', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newProject),
+   
+    })
+  
+    if (res.ok) {
+      setNewProject({ name: '' })
+      fetchProjects()
+    }
+   
+  }
+
   const deleteTask = async (taskId: string) => {
     if (!user) return
     const res = await fetch(`/api/tasks/${taskId}`, {
       method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
     })
 
     if (res.ok) {
@@ -153,23 +175,6 @@ export default function TaskManager() {
     }
   }
 
-  // const handleSignup = async (e: React.FormEvent) => {
-  //   e.preventDefault()
-  //   const res = await fetch('/api/auth/signup', {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify(signupForm),
-  //   })
-
-  //   if (res.ok) {
-  //     const data = await res.json()
-  //     setUser(data)
-  //     setSignupForm({ email: '', password: '', name: '' })
-  //   } else {
-  //     alert('Signup failed')
-  //   }
-  // }
-
   const handleLogout = () => {
     setUser(null)
     setTasks([])
@@ -188,9 +193,7 @@ export default function TaskManager() {
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="rounded-md shadow-sm -space-y-px">
               <div>
-                <label htmlFor="email-address" className="sr-only">
-                  Email address
-                </label>
+                <label htmlFor="email-address" className="sr-only">Email address</label>
                 <Input
                   id="email-address"
                   name="email"
@@ -204,30 +207,27 @@ export default function TaskManager() {
                 />
               </div>
               <div>
-                <label htmlFor="password" className="sr-only">
-                  Password
-                </label>
-                <div className='relative'>
-                <Input
-                  id="password"
-                  name="password"
-                  type={showPassword?"text":"password"}
-                  autoComplete="none"
-                  required
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="Password"
-                  value={loginForm.password}
-                  onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
-                />
-                <button 
-                 
-                  className="absolute right-2 top-2.5"
-                  onClick={() => setShowPassword(!showPassword)}
+                <label htmlFor="password" className="sr-only">Password</label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="none"
+                    required
+                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    placeholder="Password"
+                    value={loginForm.password}
+                    onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
+                  />
+                  <button 
+                    type="button"
+                    className="absolute right-2 top-2.5"
+                    onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword?<EyeClosed className="bg-transparent h-4 w-4"/>:<Eye className="bg-transparent h-4 w-4"/>}
-                </button>
+                    {showPassword ? <EyeClosed className="bg-transparent h-4 w-4"/> : <Eye className="bg-transparent h-4 w-4"/>}
+                  </button>
                 </div>
-                
               </div>
             </div>
 
@@ -240,79 +240,6 @@ export default function TaskManager() {
               </Button>
             </div>
           </form>
-
-          {/* <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or</span>
-              </div>
-            </div>
-
-            <form className="mt-6 space-y-6" onSubmit={handleSignup}>
-              <div className="rounded-md shadow-sm -space-y-px">
-                <div>
-                  <label htmlFor="signup-name" className="sr-only">
-                    Name
-                  </label>
-                  <Input
-                    id="signup-name"
-                    name="name"
-                    type="text"
-                    autoComplete="name"
-                    required
-                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    placeholder="Name"
-                    value={signupForm.name}
-                    onChange={(e) => setSignupForm({ ...signupForm, name: e.target.value })}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="signup-email" className="sr-only">
-                    Email address
-                  </label>
-                  <Input
-                    id="signup-email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    placeholder="Email address"
-                    value={signupForm.email}
-                    onChange={(e) => setSignupForm({ ...signupForm, email: e.target.value })}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="signup-password" className="sr-only">
-                    Password
-                  </label>
-                  <Input
-                    id="signup-password"
-                    name="password"
-                    type="password"
-                    autoComplete="new-password"
-                    required
-                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    placeholder="Password"
-                    value={signupForm.password}
-                    onChange={(e) => setSignupForm({ ...signupForm, password: e.target.value })}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <Button
-                  type="submit"
-                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  Sign up
-                </Button>
-              </div>
-            </form>
-          </div> */}
         </div>
       </div>
     )
@@ -357,22 +284,38 @@ export default function TaskManager() {
           <div>
             <h2 className="text-xl font-semibold mb-2">Tasks</h2>
             {selectedProject ? (
-              <ul className="space-y-2">
+              <ul className="space-y-4">
                 {tasks.map((task) => (
-                  <li key={task.id} className="flex items-center space-x-2">
-                    <Checkbox
-                      checked={task.completed}
-                      onCheckedChange={(checked) => toggleTaskCompletion(task.id, checked as boolean)}
-                    />
-                    <span className={task.completed ? 'line-through' : ''}>{task.title}</span>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => deleteTask(task.id)}
-                      className="ml-auto"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                  <li key={task.id} className="bg-white p-4 rounded-lg shadow">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={task.completed}
+                        onCheckedChange={(checked) => toggleTaskCompletion(task.id, checked as boolean)}
+                      />
+                      <span className={`flex-grow ${task.completed ? 'line-through' : ''}`}>{task.title}</span>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => toggleTaskExpansion(task.id)}
+                      >
+                        {expandedTasks.includes(task.id) ? 
+                          <ChevronUp className="h-4 w-4" /> : 
+                          <ChevronDown className="h-4 w-4" />
+                        }
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => deleteTask(task.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    {expandedTasks.includes(task.id) && task.description && (
+                      <div className="mt-2 pl-8 text-gray-600">
+                        {formatDescription(task.description)}
+                      </div>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -387,11 +330,11 @@ export default function TaskManager() {
                   value={newTask.title}
                   onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
                 />
-                <Input
-                  type="text"
-                  placeholder="Task description"
+                <Textarea
+                  placeholder="Task description (Use • or - for bullet points)"
                   value={newTask.description}
                   onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
+                  className="min-h-24"
                 />
                 <Button type="submit">Add Task</Button>
               </form>
@@ -414,4 +357,3 @@ export default function TaskManager() {
     </div>
   )
 }
-
