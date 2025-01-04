@@ -2,6 +2,7 @@
 import SigninForm from '@/components/SigninForm'
 import { authOptions } from '@/lib/auth'
 import { getServerSession } from 'next-auth'
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import React from 'react'
 
@@ -17,6 +18,7 @@ const page = async() => {
                 <div className='lg:pl-20'>
                   <SigninForm/>
                 </div>
+                <p className="pt-5 flex justify-center text-balance text-sm md:text-base">Don&apos;t have an account? <Link href="/signup" className="text-gray-600 dark:text-gray-400 underline pl-0.5">Subscribe</Link></p>
             </div>
         <div className="hidden lg:block bg-slate-200 h-screen dark:bg-neutral-800"></div>
     </div>

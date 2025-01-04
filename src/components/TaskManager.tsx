@@ -22,7 +22,7 @@ export default function TaskManager({userId}: {userId:string}) {
   const {tasks, setTasks} = useTaskStore() 
   const [projects, setProjects] = useState<Project[]>([])
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
-  const [newTask, setNewTask] = useState({ title: '', description: '', projectId: '' })
+  const [newTask, setNewTask] = useState({ title: '', description: '' })
   const [newProject, setNewProject] = useState({ name: '' })
   const [selectedProject, setSelectedProject] = useState<string | null>(null)
 
@@ -87,14 +87,15 @@ export default function TaskManager({userId}: {userId:string}) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        ...newTask,
+        taskData: newTask,
         projectId: selectedProject,
         dueDate: selectedDate,
+        userId:userId
       }),
     })
 
     if (res.ok) {
-      setNewTask({ title: '', description: '', projectId: '' })
+      setNewTask({ title: '', description: '' })
       fetchTasks()
     }
   }
@@ -121,7 +122,10 @@ export default function TaskManager({userId}: {userId:string}) {
     const res = await fetch('/api/projects', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newProject),
+      body: JSON.stringify({
+        projectData:newProject,
+        userId
+      }),
    
     })
   

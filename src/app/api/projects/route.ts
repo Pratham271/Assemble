@@ -19,8 +19,9 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
-  const { userId, ...projectData } = body
-  
+  const { userId, projectData } = body
+  console.log("userid: ", userId)
+  console.log("task data: ", projectData)
   if (!userId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }

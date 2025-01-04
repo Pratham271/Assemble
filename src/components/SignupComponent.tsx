@@ -70,7 +70,7 @@ const SignupComponent = () => {
     },[])
 
     async function onSubmit(values: z.infer<typeof formSchema>){
-        const res = await signup( values.name, username.trim(), values.password.trim())
+        const res = await signup( values.name.trim(), values.email.trim(), values.password.trim())
         if(res===true){
           
           router.push("/signin")
@@ -91,7 +91,7 @@ const SignupComponent = () => {
                 <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                    <Input {...field} value={username} disabled/>
+                    <Input {...field}  disabled/>
                 </FormControl>
                 <FormMessage />
                 </FormItem>
@@ -104,7 +104,7 @@ const SignupComponent = () => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input {...field} value={username} disabled/>
+                <Input {...field}  disabled/>
               </FormControl>
               <FormMessage />
             </FormItem>

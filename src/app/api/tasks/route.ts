@@ -43,16 +43,19 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
-  const { userId, ...taskData } = body
-  
+  const { userId, taskData, projectId, dueDate } = body
   if (!userId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const task = await prisma.task.create({
     data: {
-      ...body,
-      userId: userId,
+      title: taskData.title,
+      description: taskData.description,
+      userId:userId,
+      projectId: projectId,
+      dueDate: dueDate
+      
     },
   })
   return NextResponse.json(task)
