@@ -10,7 +10,7 @@ import logout from '@/actions/logout';
 const Logout = () => {
     const router = useRouter()
     const session = useSession()
-    const name = session.data?.user?.name
+    const name = session.data?.user?.email
   return (
     <div>
         <Button className="mr-4" onClick={async()=> {
