@@ -14,7 +14,7 @@ export default async function Home() {
   return (
     <main className="min-h-screen">
       <Appbar name={session.user.name}/>
-      <TaskManager userId={session.user.id} name={session.user.name}/>
+      <TaskManager userId={session.user.id}/>
     </main>
   )
 }

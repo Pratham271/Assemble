@@ -27,21 +27,15 @@ type Project = {
   name: string
 }
 
-type User = {
-  id: string
-  email: string
-  name: string | null
-}
 
-export default function TaskManager({userId, name}: {userId:string, name:string}) {
+export default function TaskManager({userId}: {userId:string}) {
   const [tasks, setTasks] = useState<Task[]>([])
   const [projects, setProjects] = useState<Project[]>([])
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
   const [newTask, setNewTask] = useState({ title: '', description: '', projectId: '' })
   const [newProject, setNewProject] = useState({ name: '' })
   const [selectedProject, setSelectedProject] = useState<string | null>(null)
-  const [user, setUser] = useState<User | null>(null)
-  // const [loginForm, setLoginForm] = useState({ email: '', password: '' })
+
   const [expandedTasks, setExpandedTasks] = useState<string[]>([])
 
   // Toggle task expansion
@@ -69,7 +63,7 @@ export default function TaskManager({userId, name}: {userId:string, name:string}
       fetchTasks()
       fetchProjects()
     }
-  }, [selectedDate, selectedProject, user])
+  }, [selectedDate, selectedProject, userId])
 
   const fetchTasks = async () => {
     console.log("user id in fetch tasks: ", userId)
@@ -135,7 +129,7 @@ export default function TaskManager({userId, name}: {userId:string, name:string}
 
   const addProject = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!newProject.name || !user) return
+    if (!newProject.name || !userId) return
     const res = await fetch('/api/projects', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -151,7 +145,7 @@ export default function TaskManager({userId, name}: {userId:string, name:string}
   }
 
   const deleteTask = async (taskId: string) => {
-    if (!user) return
+    if (!userId) return
     const res = await fetch(`/api/tasks/${taskId}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
@@ -161,8 +155,6 @@ export default function TaskManager({userId, name}: {userId:string, name:string}
       fetchTasks()
     }
   }
-
-
 
 
   return (
