@@ -29,7 +29,7 @@ type Project = {
 
 
 export default function TaskManager({userId}: {userId:string}) {
-  // const [tasks, setTasks] = useState<Task[]>([])
+  
   const {tasks, setTasks} = useTaskStore() 
   const [projects, setProjects] = useState<Project[]>([])
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
