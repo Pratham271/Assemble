@@ -1,3 +1,4 @@
+import Appbar from '@/components/Appbar'
 import TaskManager from '@/components/TaskManager'
 import { authOptions } from '@/lib/auth'
 import { getServerSession } from 'next-auth'
@@ -12,7 +13,8 @@ export default async function Home() {
   console.log(session.user.id)
   return (
     <main className="min-h-screen">
-      <TaskManager userId={session.user.id}/>
+      <Appbar name={session.user.name}/>
+      <TaskManager userId={session.user.id} name={session.user.name}/>
     </main>
   )
 }

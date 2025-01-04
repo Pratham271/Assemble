@@ -85,7 +85,8 @@ export const authOptions = {
                     id: token.sub
                 }
             })
-            session.user.name = existingUser?.email 
+            session.user.email = existingUser?.email 
+            session.user.name = existingUser?.name
             }
             return session
         },

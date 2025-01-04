@@ -33,7 +33,7 @@ type User = {
   name: string | null
 }
 
-export default function TaskManager({userId}: {userId:string}) {
+export default function TaskManager({userId, name}: {userId:string, name:string}) {
   const [tasks, setTasks] = useState<Task[]>([])
   const [projects, setProjects] = useState<Project[]>([])
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
@@ -164,14 +164,6 @@ export default function TaskManager({userId}: {userId:string}) {
 
 
 
-  const handleLogout = () => {
-    setUser(null)
-    setTasks([])
-    setProjects([])
-    setSelectedProject(null)
-  }
-
-
 
   return (
     <div className="flex">
@@ -192,14 +184,6 @@ export default function TaskManager({userId}: {userId:string}) {
         </ul>
       </div>
       <div className="flex-1 p-4">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold">Assemble</h1>
-          <div className="flex items-center space-x-2">
-            {/* <span>Welcome, {user.name || user.email}</span> */}
-            {/* <Button onClick={handleLogout}>Logout</Button> */}
-            <Logout/>
-          </div>
-        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <h2 className="text-xl font-semibold mb-2">Select Date</h2>
