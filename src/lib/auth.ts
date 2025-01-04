@@ -48,14 +48,14 @@ export const authOptions = {
                             const jwt = await generateJWT({
                                 id: existingUser.id,
                               });
-                              // await prisma.user.update({
-                              //   where: {
-                              //     id: existingUser.id,
-                              //   },
-                              //   data: {
-                              //     token: jwt,
-                              //   },
-                              // });
+                              await prisma.user.update({
+                                where: {
+                                  id: existingUser.id,
+                                },
+                                data: {
+                                  token: jwt,
+                                },
+                              });
                   
                             return{
                                 id: existingUser.id,

@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Trash2, ChevronDown, ChevronUp } from 'lucide-react'
+import Logout from './Logout'
 
 type Task = {
   id: string
@@ -195,7 +196,8 @@ export default function TaskManager({userId}: {userId:string}) {
           <h1 className="text-2xl font-bold">Assemble</h1>
           <div className="flex items-center space-x-2">
             {/* <span>Welcome, {user.name || user.email}</span> */}
-            <Button onClick={handleLogout}>Logout</Button>
+            {/* <Button onClick={handleLogout}>Logout</Button> */}
+            <Logout/>
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
