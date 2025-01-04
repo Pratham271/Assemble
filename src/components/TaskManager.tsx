@@ -6,8 +6,9 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Trash2, ChevronDown, ChevronUp } from 'lucide-react'
+import { Trash2, ChevronDown, ChevronUp, Loader } from 'lucide-react'
 import { useTaskStore } from '@/store/useTaskStore'
+import Spinner from './ui/spinner'
 
 
 
@@ -19,13 +20,12 @@ type Project = {
 
 export default function TaskManager({userId}: {userId:string}) {
   
-  const {tasks, setTasks} = useTaskStore() 
+  const {tasks, setTasks, projectsLoading, setProjectsLoading} = useTaskStore() 
   const [projects, setProjects] = useState<Project[]>([])
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
   const [newTask, setNewTask] = useState({ title: '', description: '' })
   const [newProject, setNewProject] = useState({ name: '' })
   const [selectedProject, setSelectedProject] = useState<string | null>(null)
-
   const [expandedTasks, setExpandedTasks] = useState<string[]>([])
 
   // Toggle task expansion
@@ -68,11 +68,19 @@ export default function TaskManager({userId}: {userId:string}) {
 
 
   const fetchProjects = async () => {
-    if (!userId) return
-    const res = await fetch(`/api/projects?userId=${userId}`)
-    if (res.ok) {
-      const data = await res.json()
-      setProjects(data)
+    try {
+      if (!userId) return
+      setProjectsLoading(true)
+      const res = await fetch(`/api/projects?userId=${userId}`)
+      if (res.ok) {
+        const data = await res.json()
+        setProjects(data)
+      }
+    } catch (error) {
+      
+    }
+    finally{
+      setProjectsLoading(false)
     }
   }
 
@@ -154,7 +162,9 @@ export default function TaskManager({userId}: {userId:string}) {
       <div className="w-64 bg-gray-100 p-4 h-screen">
         <h2 className="text-xl font-semibold mb-4">Projects</h2>
         <ul className="space-y-2">
-          {projects.map((project) => (
+          {projectsLoading? <div className="flex justify-center items-center h-screen">
+              <Loader className="animate-spin" />
+            </div>:projects.map((project) => (
             <li
               key={project.id}
               className={`cursor-pointer p-2 rounded ${

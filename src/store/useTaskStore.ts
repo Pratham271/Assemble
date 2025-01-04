@@ -14,15 +14,17 @@ type Task = {
 
 type TaskStore = {
     tasks: Task[],
-
+    projectsLoading: boolean,
     // Actions
-    setTasks: (tasks: Task[]) => void
+    setTasks: (tasks: Task[]) => void,
+    setProjectsLoading: (projectsLoading: boolean) => void
 }
 
 export const useTaskStore = create<TaskStore>((set, get) => ({
     tasks: [],
-
+    projectsLoading: false,
     // State setters
     setTasks: (tasks) => set({ tasks }),
+    setProjectsLoading: (projectsLoading) => set({projectsLoading})
     
 }))
