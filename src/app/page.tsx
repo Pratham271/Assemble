@@ -10,7 +10,6 @@ export default async function Home() {
   if(!session){
     redirect("/signin")
   }
-  console.log(session.user.id)
   return (
     <main className="min-h-screen">
       <Appbar name={session.user.name}/>

@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Trash2, ChevronDown, ChevronUp } from 'lucide-react'
+import { useTaskStore } from '@/store/useTaskStore'
 
 
 type Task = {
@@ -28,7 +29,8 @@ type Project = {
 
 
 export default function TaskManager({userId}: {userId:string}) {
-  const [tasks, setTasks] = useState<Task[]>([])
+  // const [tasks, setTasks] = useState<Task[]>([])
+  const {tasks, setTasks} = useTaskStore() 
   const [projects, setProjects] = useState<Project[]>([])
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
   const [newTask, setNewTask] = useState({ title: '', description: '', projectId: '' })
@@ -65,7 +67,6 @@ export default function TaskManager({userId}: {userId:string}) {
   }, [selectedDate, selectedProject, userId])
 
   const fetchTasks = async () => {
-    console.log("user id in fetch tasks: ", userId)
     if (!userId) return
     const date = selectedDate ? format(selectedDate, 'yyyy-MM-dd') : ''
     const projectFilter = selectedProject ? `&projectId=${selectedProject}` : ''
@@ -78,7 +79,6 @@ export default function TaskManager({userId}: {userId:string}) {
 
 
   const fetchProjects = async () => {
-    console.log("user id in fetch projects: ", userId)
     if (!userId) return
     const res = await fetch(`/api/projects?userId=${userId}`)
     if (res.ok) {
