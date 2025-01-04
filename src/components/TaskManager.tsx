@@ -70,17 +70,6 @@ export default function TaskManager({userId}: {userId:string}) {
     }
   }, [selectedDate, selectedProject, user])
 
-  // Rest of the fetch functions remain the same
-  // const fetchTasks = async () => {
-  //   if (!user) return
-  //   const date = selectedDate ? format(selectedDate, 'yyyy-MM-dd') : ''
-  //   const projectFilter = selectedProject ? `&projectId=${selectedProject}` : ''
-  //   const res = await fetch(`/api/tasks?date=${date}${projectFilter}`)
-  //   if (res.ok) {
-  //     const data = await res.json()
-  //     setTasks(data)
-  //   }
-  // }
   const fetchTasks = async () => {
     console.log("user id in fetch tasks: ", userId)
     if (!userId) return
@@ -93,14 +82,7 @@ export default function TaskManager({userId}: {userId:string}) {
     }
   }
 
-  // const fetchProjects = async () => {
-  //   if (!user) return
-  //   const res = await fetch('/api/projects')
-  //   if (res.ok) {
-  //     const data = await res.json()
-  //     setProjects(data)
-  //   }
-  // }
+
   const fetchProjects = async () => {
     console.log("user id in fetch projects: ", userId)
     if (!userId) return
@@ -179,22 +161,7 @@ export default function TaskManager({userId}: {userId:string}) {
     }
   }
 
-  // const handleLogin = async (e: React.FormEvent) => {
-  //   e.preventDefault()
-  //   const res = await fetch('/api/auth/login', {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify(loginForm),
-  //   })
 
-  //   if (res.ok) {
-  //     const data = await res.json()
-  //     setUser(data.user)
-  //     setLoginForm({ email: '', password: '' })
-  //   } else {
-  //     alert('Login failed')
-  //   }
-  // }
 
   const handleLogout = () => {
     setUser(null)
@@ -203,68 +170,7 @@ export default function TaskManager({userId}: {userId:string}) {
     setSelectedProject(null)
   }
 
-  // if (!user) {
-  //   return (
-  //     <div className="flex justify-center items-center h-screen">
-  //       <div className="w-full max-w-md space-y-8">
-  //         <div>
-  //           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
-  //         </div>
-  //         <form className="mt-8 space-y-6" onSubmit={handleLogin}>
-  //           <input type="hidden" name="remember" defaultValue="true" />
-  //           <div className="rounded-md shadow-sm -space-y-px">
-  //             <div>
-  //               <label htmlFor="email-address" className="sr-only">Email address</label>
-  //               <Input
-  //                 id="email-address"
-  //                 name="email"
-  //                 type="email"
-  //                 autoComplete="email"
-  //                 required
-  //                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-  //                 placeholder="Email address"
-  //                 value={loginForm.email}
-  //                 onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
-  //               />
-  //             </div>
-  //             <div>
-  //               <label htmlFor="password" className="sr-only">Password</label>
-  //               <div className="relative">
-  //                 <Input
-  //                   id="password"
-  //                   name="password"
-  //                   type={showPassword ? "text" : "password"}
-  //                   autoComplete="none"
-  //                   required
-  //                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-  //                   placeholder="Password"
-  //                   value={loginForm.password}
-  //                   onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
-  //                 />
-  //                 <button 
-  //                   type="button"
-  //                   className="absolute right-2 top-2.5"
-  //                   onClick={() => setShowPassword(!showPassword)}
-  //                 >
-  //                   {showPassword ? <EyeClosed className="bg-transparent h-4 w-4"/> : <Eye className="bg-transparent h-4 w-4"/>}
-  //                 </button>
-  //               </div>
-  //             </div>
-  //           </div>
 
-  //           <div>
-  //             <Button
-  //               type="submit"
-  //               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-  //             >
-  //               Sign in
-  //             </Button>
-  //           </div>
-  //         </form>
-  //       </div>
-  //     </div>
-  //   )
-  // }
 
   return (
     <div className="flex">
