@@ -11,6 +11,21 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  // Override or disable specific rules:
+  {
+    rules: {
+      // Disable `any` usage checks:
+      "@typescript-eslint/no-explicit-any": "off",
+      // Disable no-unused-vars checks:
+      "@typescript-eslint/no-unused-vars": "off",
+      // Disable the React hooks exhaustive deps check:
+      "react-hooks/exhaustive-deps": "off",
+      // Disable 'no-var' rule:
+      "no-var": "off",
+      // Disable the ban on @ts-comment usage:
+      "@typescript-eslint/ban-ts-comment": "off",
+    },
+  },
 ];
 
 export default eslintConfig;

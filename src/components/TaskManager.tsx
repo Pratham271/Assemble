@@ -1,3 +1,4 @@
+// /* eslint-disable */
 'use client'
 import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
@@ -6,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Eye, EyeClosed, Trash2, ChevronDown, ChevronUp } from 'lucide-react'
+import { Trash2, ChevronDown, ChevronUp } from 'lucide-react'
 
 type Task = {
   id: string
@@ -39,8 +40,7 @@ export default function TaskManager({userId}: {userId:string}) {
   const [newProject, setNewProject] = useState({ name: '' })
   const [selectedProject, setSelectedProject] = useState<string | null>(null)
   const [user, setUser] = useState<User | null>(null)
-  const [loginForm, setLoginForm] = useState({ email: '', password: '' })
-  const [showPassword, setShowPassword] = useState(false)
+  // const [loginForm, setLoginForm] = useState({ email: '', password: '' })
   const [expandedTasks, setExpandedTasks] = useState<string[]>([])
 
   // Toggle task expansion
@@ -179,22 +179,22 @@ export default function TaskManager({userId}: {userId:string}) {
     }
   }
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(loginForm),
-    })
+  // const handleLogin = async (e: React.FormEvent) => {
+  //   e.preventDefault()
+  //   const res = await fetch('/api/auth/login', {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify(loginForm),
+  //   })
 
-    if (res.ok) {
-      const data = await res.json()
-      setUser(data.user)
-      setLoginForm({ email: '', password: '' })
-    } else {
-      alert('Login failed')
-    }
-  }
+  //   if (res.ok) {
+  //     const data = await res.json()
+  //     setUser(data.user)
+  //     setLoginForm({ email: '', password: '' })
+  //   } else {
+  //     alert('Login failed')
+  //   }
+  // }
 
   const handleLogout = () => {
     setUser(null)

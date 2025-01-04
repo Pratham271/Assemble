@@ -57,7 +57,7 @@ const prisma = new PrismaClient()
 //   return NextResponse.json(task)
 // }
 
-
+// /* eslint-disable */
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
   const userId = searchParams.get('userId')

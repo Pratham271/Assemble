@@ -2,7 +2,6 @@
 import SigninForm from '@/components/SigninForm'
 import { authOptions } from '@/lib/auth'
 import { getServerSession } from 'next-auth'
-import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import React from 'react'
 
