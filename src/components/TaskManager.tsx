@@ -116,7 +116,7 @@ export default function TaskManager({userId}: {userId:string}) {
   // Modified addTask to handle bullet points
   const addTask = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!newTask.title || !selectedProject || !user) return
+    if (!newTask.title || !selectedProject || !userId) return
 
     const res = await fetch('/api/tasks', {
       method: 'POST',
@@ -136,7 +136,7 @@ export default function TaskManager({userId}: {userId:string}) {
 
   // Rest of the handler functions remain the same
   const toggleTaskCompletion = async (taskId: string, completed: boolean) => {
-    if (!user) return
+    if (!userId) return
     const res = await fetch(`/api/tasks/${taskId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
@@ -286,7 +286,7 @@ export default function TaskManager({userId}: {userId:string}) {
       </div>
       <div className="flex-1 p-4">
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold">Task Management App</h1>
+          <h1 className="text-2xl font-bold">Assemble</h1>
           <div className="flex items-center space-x-2">
             {/* <span>Welcome, {user.name || user.email}</span> */}
             <Button onClick={handleLogout}>Logout</Button>

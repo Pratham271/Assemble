@@ -68,12 +68,41 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const where: any = { userId: userId }
-  if (date) where.dueDate = date
-  if (projectId) where.projectId = projectId
+  // const where: any = { userId: userId }
+  // if (date) where.dueDate = date
+  // if (projectId) where.projectId = projectId
 
-  const tasks = await prisma.task.findMany({ where })
-  return NextResponse.json(tasks)
+  // const tasks = await prisma.task.findMany({ where })
+  // return NextResponse.json(tasks)
+  
+
+
+
+    let whereClause: any = { userId: userId }
+
+    if (date) {
+      const startDate = new Date(date)
+      startDate.setHours(0, 0, 0, 0)
+      const endDate = new Date(startDate)
+      endDate.setDate(endDate.getDate() + 1)
+
+      whereClause.dueDate = {
+        gte: startDate,
+        lt: endDate,
+      }
+    }
+
+    if (projectId) {
+      whereClause.projectId = projectId
+    }
+
+    const tasks = await prisma.task.findMany({
+      where: whereClause,
+      include: { project: true },
+    })
+
+    return NextResponse.json(tasks)
+  
 }
 
 export async function POST(request: NextRequest) {
@@ -84,12 +113,20 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  // const task = await prisma.task.create({
+  //   data: {
+  //     ...taskData,
+  //     userId: userId,
+  //   },
+  // })
+  
+  // return NextResponse.json(task)
+
   const task = await prisma.task.create({
     data: {
-      ...taskData,
+      ...body,
       userId: userId,
     },
   })
-  
   return NextResponse.json(task)
 }
