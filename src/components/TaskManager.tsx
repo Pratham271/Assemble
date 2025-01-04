@@ -10,17 +10,6 @@ import { Trash2, ChevronDown, ChevronUp } from 'lucide-react'
 import { useTaskStore } from '@/store/useTaskStore'
 
 
-type Task = {
-  id: string
-  title: string
-  description: string
-  dueDate: string
-  completed: boolean
-  project: {
-    id: string
-    name: string
-  }
-}
 
 type Project = {
   id: string
