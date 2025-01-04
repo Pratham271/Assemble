@@ -7,7 +7,6 @@ const Appbar = ({name}:{name:string}) => {
     <h1 className="text-2xl font-bold">Assemble</h1>
     <div className="flex items-center space-x-2">
       <span>Welcome, {name}</span>
-      {/* <Button onClick={handleLogout}>Logout</Button> */}
       <Logout/>
     </div>
   </div>
