@@ -24,6 +24,8 @@ const eslintConfig = [
       "no-var": "off",
       // Disable the ban on @ts-comment usage:
       "@typescript-eslint/ban-ts-comment": "off",
+      // Disable the `prefer-const` rule:
+      'prefer-const': 'off',
     },
   },
 ];
