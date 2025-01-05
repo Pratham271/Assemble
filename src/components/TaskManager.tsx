@@ -8,7 +8,6 @@ import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Trash2, ChevronDown, ChevronUp, Loader } from 'lucide-react'
 import { useTaskStore } from '@/store/useTaskStore'
-import Spinner from './ui/spinner'
 
 
 
@@ -16,7 +15,6 @@ type Project = {
   id: string
   name: string
 }
-
 
 export default function TaskManager({userId}: {userId:string}) {
   
