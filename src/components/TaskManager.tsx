@@ -49,9 +49,14 @@ export default function TaskManager({userId}: {userId:string}) {
   useEffect(() => {
     if (userId) {
       fetchTasks()
-      fetchProjects()
+      
     }
   }, [selectedDate, selectedProject, userId])
+
+
+  useEffect(() => {
+    fetchProjects()
+  },[userId])
 
   const fetchTasks = async () => {
     if (!userId) return
