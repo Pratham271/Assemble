@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Trash2, ChevronDown, ChevronUp, Loader } from 'lucide-react'
 import { useTaskStore } from '@/store/useTaskStore'
+import { AddTaskDialog } from './Tasks/AddTaskDialog'
 
 
 
@@ -90,15 +91,14 @@ export default function TaskManager({userId}: {userId:string}) {
   
 
   // Modified addTask to handle bullet points
-  const addTask = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!newTask.title || !selectedProject || !userId) return
+  const addTask = async (title:string, description:string) => {
+    if (!title || !selectedProject || !userId) return
 
     const res = await fetch('/api/tasks', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        taskData: newTask,
+        taskData: {title, description},
         projectId: selectedProject,
         dueDate: selectedDate,
         userId:userId
@@ -161,26 +161,42 @@ export default function TaskManager({userId}: {userId:string}) {
 
 
   return (
-    <div className="flex">
-      <div className="w-64 bg-gray-100 p-4 h-screen">
+    <div className="flex h-screen">
+      <div className="w-64 bg-gray-100 p-4 overflow-y-auto">
         <h2 className="text-xl font-semibold mb-4">Projects</h2>
-        <ul className="space-y-2">
-          {projectsLoading? <div className="flex justify-center items-center h-screen">
-              <Loader className="animate-spin" />
-            </div>:projects.map((project) => (
-            <li
-              key={project.id}
-              className={`cursor-pointer p-2 rounded ${
-                selectedProject === project.id ? 'bg-blue-200' : 'hover:bg-gray-200'
-              }`}
-              onClick={() => setSelectedProject(project.id)}
-            >
-              {project.name}
-            </li>
-          ))}
-        </ul>
+        {projectsLoading ? (
+          <div className="flex justify-center items-center h-24">
+            <Loader className="animate-spin" />
+          </div>
+        ) : (
+          <ul className="space-y-2">
+            {projects.map((project) => (
+              <li
+                key={project.id}
+                className={`cursor-pointer p-2 rounded ${
+                  selectedProject === project.id ? 'bg-blue-200' : 'hover:bg-gray-200'
+                }`}
+                onClick={() => setSelectedProject(project.id)}
+              >
+                {project.name}
+              </li>
+            ))}
+          </ul>
+        )}
+        <div className="mt-4">
+          <h3 className="text-lg font-semibold mb-2">Add New Project</h3>
+          <form onSubmit={addProject} className="space-y-2">
+            <Input
+              type="text"
+              placeholder="Project name"
+              value={newProject.name}
+              onChange={(e) => setNewProject({ name: e.target.value })}
+            />
+            <Button type="submit">Add Project</Button>
+          </form>
+        </div>
       </div>
-      <div className="flex-1 p-4">
+      <div className="flex-1 p-4 overflow-y-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <h2 className="text-xl font-semibold mb-2">Select Date</h2>
@@ -194,73 +210,47 @@ export default function TaskManager({userId}: {userId:string}) {
           <div>
             <h2 className="text-xl font-semibold mb-2">Tasks</h2>
             {selectedProject ? (
-              <ul className="space-y-4">
-                {tasks.map((task) => (
-                  <li key={task.id} className="bg-white p-4 rounded-lg shadow">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        checked={task.completed}
-                        onCheckedChange={(checked) => toggleTaskCompletion(task.id, checked as boolean)}
-                      />
-                      <span className={`flex-grow ${task.completed ? 'line-through' : ''}`}>{task.title}</span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => toggleTaskExpansion(task.id)}
-                      >
-                        {expandedTasks.includes(task.id) ? 
-                          <ChevronUp className="h-4 w-4" /> : 
-                          <ChevronDown className="h-4 w-4" />
-                        }
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => deleteTask(task.id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    {expandedTasks.includes(task.id) && task.description && (
-                      <div className="mt-2 pl-8 text-gray-600">
-                        {formatDescription(task.description)}
+              <>
+                <AddTaskDialog onAddTask={addTask} />
+                <ul className="mt-4 space-y-4">
+                  {tasks.filter(task => task.project.id === selectedProject).map((task) => (
+                    <li key={task.id} className="bg-white p-4 rounded-lg shadow">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          checked={task.completed}
+                          onCheckedChange={(checked) => toggleTaskCompletion(task.id, checked as boolean)}
+                        />
+                        <span className={`flex-grow ${task.completed ? 'line-through' : ''}`}>{task.title}</span>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => toggleTaskExpansion(task.id)}
+                        >
+                          {expandedTasks.includes(task.id) ? 
+                            <ChevronUp className="h-4 w-4" /> : 
+                            <ChevronDown className="h-4 w-4" />
+                          }
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => deleteTask(task.id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
                       </div>
-                    )}
-                  </li>
-                ))}
-              </ul>
+                      {expandedTasks.includes(task.id) && task.description && (
+                        <div className="mt-2 pl-8 text-gray-600">
+                          {formatDescription(task.description)}
+                        </div>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </>
             ) : (
               <p>Select a project to view tasks</p>
             )}
-            {selectedProject && (
-              <form onSubmit={addTask} className="mt-4 space-y-2">
-                <Input
-                  type="text"
-                  placeholder="Task title"
-                  value={newTask.title}
-                  onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-                />
-                <Textarea
-                  placeholder="Task description (Use • or - for bullet points)"
-                  value={newTask.description}
-                  onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
-                  className="min-h-24"
-                />
-                <Button type="submit">Add Task</Button>
-              </form>
-            )}
-          </div>
-          <div>
-            <h2 className="text-xl font-semibold mb-2">Add New Project</h2>
-            <form onSubmit={addProject} className="space-y-2">
-              <Input
-                type="text"
-                placeholder="Project name"
-                value={newProject.name}
-                onChange={(e) => setNewProject({ name: e.target.value })}
-              />
-              <Button type="submit">Add Project</Button>
-            </form>
           </div>
         </div>
       </div>
