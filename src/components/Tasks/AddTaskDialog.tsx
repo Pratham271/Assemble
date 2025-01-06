@@ -23,27 +23,29 @@ export function AddTaskDialog({ onAddTask }: AddTaskDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button>Add New Task</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Add New Task</DialogTitle>
-        </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            placeholder="Task title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <Textarea
-            placeholder="Task description (Use • or - for bullet points)"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="min-h-24"
-          />
-          <Button type="submit">Add Task</Button>
-        </form>
+      <Button onClick={() => setOpen(true)}>Add New Task</Button>
+      <DialogContent className="sm:max-w-7xl w-full sm:h-[calc(100vh-4rem)] sm:max-h-full mx-12 my-2 p-6">
+        <div className="flex flex-col h-full">
+          <DialogHeader className="px-4 py-2 border-b">
+            <div className="flex justify-between items-center">
+              <DialogTitle>Add New Task</DialogTitle>
+            </div>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="flex-1 overflow-auto p-4 space-y-4">
+            <Input
+              placeholder="Task title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <Textarea
+              placeholder="Task description (Use • or - for bullet points)"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="min-h-[200px]"
+            />
+            <Button type="submit" className="w-full">Add Task</Button>
+          </form>
+        </div>
       </DialogContent>
     </Dialog>
   )
