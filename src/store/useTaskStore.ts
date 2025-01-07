@@ -26,7 +26,8 @@ type TaskStore = {
     projectsLoading: boolean,
     projects: Project[],
     selectedProject: string | null,
-    newProject: NewProject
+    newProject: NewProject,
+    selectedDate: Date | undefined
 
     // Actions
     setTasks: (tasks: Task[]) => void,
@@ -34,6 +35,7 @@ type TaskStore = {
     setProjects: (projects: Project[]) => void
     setSelectedProject: (selectedProject: string | null) => void,
     setNewProject: (newProject: NewProject) => void
+    setSelectedDate: (selectedDate: Date | undefined) => void
 }
 
 export const useTaskStore = create<TaskStore>((set, get) => ({
@@ -42,11 +44,13 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
     projects: [],
     selectedProject: null,
     newProject: {name: ''},
+    selectedDate: new Date(),
     // State setters
     setTasks: (tasks) => set({ tasks }),
     setProjectsLoading: (projectsLoading) => set({projectsLoading}),
     setProjects: (projects) => set({ projects }),
     setSelectedProject: (selectedProject) => set({ selectedProject }),
-    setNewProject: (newProject) => set({ newProject })
+    setNewProject: (newProject) => set({ newProject }),
+    setSelectedDate: (selectedDate) => set({ selectedDate })
     
 }))

@@ -8,18 +8,13 @@ import { Trash2, ChevronDown, ChevronUp } from 'lucide-react'
 import { useTaskStore } from '@/store/useTaskStore'
 import { AddTaskDialog } from './Tasks/AddTaskDialog'
 import Sidebar from './Sidebar'
+import { DatePickerDemo } from './ui/date-picker'
 
-
-
-type Project = {
-  id: string
-  name: string
-}
 
 export default function TaskManager({userId}: {userId:string}) {
   
-  const {tasks, setTasks, setProjectsLoading, setProjects, selectedProject, newProject, setNewProject} = useTaskStore() 
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
+  const {tasks, setTasks, setProjectsLoading, setProjects, selectedProject, newProject, setNewProject, selectedDate, setSelectedDate} = useTaskStore() 
+  // const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
   const [newTask, setNewTask] = useState({ title: '', description: '' })
   const [expandedTasks, setExpandedTasks] = useState<string[]>([])
 
@@ -163,12 +158,7 @@ export default function TaskManager({userId}: {userId:string}) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <h2 className="text-xl font-semibold mb-2">Select Date</h2>
-            <Calendar
-              mode="single"
-              selected={selectedDate}
-              onSelect={setSelectedDate}
-              className="rounded-md border"
-            />
+            <DatePickerDemo/>
           </div>
           <div>
             <h2 className="text-xl font-semibold mb-2">Tasks</h2>
@@ -198,8 +188,9 @@ export default function TaskManager({userId}: {userId:string}) {
                           variant="ghost"
                           size="sm"
                           onClick={() => deleteTask(task.id)}
+                          className="p-2 rounded-md hover:bg-red-100 text-red-500 transition-colors hover:text-red-500"
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-4 w-4"/>
                         </Button>
                       </div>
                       {expandedTasks.includes(task.id) && task.description && (
