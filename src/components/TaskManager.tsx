@@ -13,8 +13,7 @@ import { DatePickerDemo } from './ui/date-picker'
 
 export default function TaskManager({userId}: {userId:string}) {
   
-  const {tasks, setTasks, setProjectsLoading, setProjects, selectedProject, newProject, setNewProject, selectedDate, setSelectedDate} = useTaskStore() 
-  // const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
+  const {tasks, setTasks, setProjectsLoading, setProjects, selectedProject, newProject, setNewProject, selectedDate } = useTaskStore() 
   const [newTask, setNewTask] = useState({ title: '', description: '' })
   const [expandedTasks, setExpandedTasks] = useState<string[]>([])
 
