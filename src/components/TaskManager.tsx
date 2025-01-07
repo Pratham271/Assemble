@@ -9,6 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Trash2, ChevronDown, ChevronUp, Loader } from 'lucide-react'
 import { useTaskStore } from '@/store/useTaskStore'
 import { AddTaskDialog } from './Tasks/AddTaskDialog'
+import Sidebar from './Sidebar'
 
 
 
@@ -19,12 +20,12 @@ type Project = {
 
 export default function TaskManager({userId}: {userId:string}) {
   
-  const {tasks, setTasks, projectsLoading, setProjectsLoading} = useTaskStore() 
-  const [projects, setProjects] = useState<Project[]>([])
+  const {tasks, setTasks, setProjectsLoading, setProjects, selectedProject, newProject, setNewProject} = useTaskStore() 
+  // const [projects, setProjects] = useState<Project[]>([])
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
   const [newTask, setNewTask] = useState({ title: '', description: '' })
-  const [newProject, setNewProject] = useState({ name: '' })
-  const [selectedProject, setSelectedProject] = useState<string | null>(null)
+  // const [newProject, setNewProject] = useState({ name: '' })
+  // const [selectedProject, setSelectedProject] = useState<string | null>(null)
   const [expandedTasks, setExpandedTasks] = useState<string[]>([])
 
   // Toggle task expansion
@@ -162,40 +163,7 @@ export default function TaskManager({userId}: {userId:string}) {
 
   return (
     <div className="flex h-screen">
-      <div className="w-64 bg-gray-100 p-4 overflow-y-auto">
-        <h2 className="text-xl font-semibold mb-4">Projects</h2>
-        {projectsLoading ? (
-          <div className="flex justify-center items-center h-24">
-            <Loader className="animate-spin" />
-          </div>
-        ) : (
-          <ul className="space-y-2">
-            {projects.map((project) => (
-              <li
-                key={project.id}
-                className={`cursor-pointer p-2 rounded ${
-                  selectedProject === project.id ? 'bg-blue-200' : 'hover:bg-gray-200'
-                }`}
-                onClick={() => setSelectedProject(project.id)}
-              >
-                {project.name}
-              </li>
-            ))}
-          </ul>
-        )}
-        <div className="mt-4">
-          <h3 className="text-lg font-semibold mb-2">Add New Project</h3>
-          <form onSubmit={addProject} className="space-y-2">
-            <Input
-              type="text"
-              placeholder="Project name"
-              value={newProject.name}
-              onChange={(e) => setNewProject({ name: e.target.value })}
-            />
-            <Button type="submit">Add Project</Button>
-          </form>
-        </div>
-      </div>
+      <Sidebar addProject={addProject}/>
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
