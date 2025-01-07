@@ -13,8 +13,7 @@ import { DatePickerDemo } from './ui/date-picker'
 
 export default function TaskManager({userId}: {userId:string}) {
   
-  const {tasks, setTasks, setProjectsLoading, setProjects, selectedProject, newProject, setNewProject, selectedDate, setSelectedDate} = useTaskStore() 
-  // const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
+  const {tasks, setTasks, setProjectsLoading, setProjects, selectedProject, newProject, setNewProject, selectedDate } = useTaskStore() 
   const [newTask, setNewTask] = useState({ title: '', description: '' })
   const [expandedTasks, setExpandedTasks] = useState<string[]>([])
 
@@ -155,12 +154,8 @@ export default function TaskManager({userId}: {userId:string}) {
     <div className="flex h-screen">
       <Sidebar addProject={addProject}/>
       <div className="flex-1 p-4 overflow-y-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <h2 className="text-xl font-semibold mb-2">Select Date</h2>
-            <DatePickerDemo/>
-          </div>
-          <div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="col-span-3">
             <h2 className="text-xl font-semibold mb-2">Tasks</h2>
             {selectedProject ? (
               <>
@@ -205,6 +200,10 @@ export default function TaskManager({userId}: {userId:string}) {
             ) : (
               <p>Select a project to view tasks</p>
             )}
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold mb-0">Select Date</h2>
+            <DatePickerDemo/>
           </div>
         </div>
       </div>
