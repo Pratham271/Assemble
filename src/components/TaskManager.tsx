@@ -3,10 +3,8 @@ import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
 import { Calendar } from '@/components/ui/calendar'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Trash2, ChevronDown, ChevronUp, Loader } from 'lucide-react'
+import { Trash2, ChevronDown, ChevronUp } from 'lucide-react'
 import { useTaskStore } from '@/store/useTaskStore'
 import { AddTaskDialog } from './Tasks/AddTaskDialog'
 import Sidebar from './Sidebar'
@@ -21,11 +19,8 @@ type Project = {
 export default function TaskManager({userId}: {userId:string}) {
   
   const {tasks, setTasks, setProjectsLoading, setProjects, selectedProject, newProject, setNewProject} = useTaskStore() 
-  // const [projects, setProjects] = useState<Project[]>([])
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
   const [newTask, setNewTask] = useState({ title: '', description: '' })
-  // const [newProject, setNewProject] = useState({ name: '' })
-  // const [selectedProject, setSelectedProject] = useState<string | null>(null)
   const [expandedTasks, setExpandedTasks] = useState<string[]>([])
 
   // Toggle task expansion
