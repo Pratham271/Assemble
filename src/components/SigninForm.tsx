@@ -90,9 +90,9 @@ const SigninForm = () => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="John" {...field} />
+                <Input placeholder="John@gmail.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
