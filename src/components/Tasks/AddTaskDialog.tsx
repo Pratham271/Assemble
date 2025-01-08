@@ -70,7 +70,7 @@ export function AddTaskDialog({ onAddTask }: AddTaskDialogProps) {
       <DialogHeader>
         <DialogTitle className="text-xl">Add New Task</DialogTitle>
         <DialogDescription className="text-base">
-          Create a new task for your project. Click save when you're done.
+          Create a new task for your project. Click save when you&apos;re done.
         </DialogDescription>
       </DialogHeader>
       <form onSubmit={handleSubmit} className="">
