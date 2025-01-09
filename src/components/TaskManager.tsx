@@ -152,7 +152,7 @@ export default function TaskManager({userId}: {userId:string}) {
 
   return (
     <div className="flex h-screen">
-      <Sidebar addProject={addProject}/>
+      <Sidebar addProject={addProject} userId={userId}/>
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="col-span-3">

@@ -1,11 +1,25 @@
-import { Loader } from 'lucide-react'
+import { Loader, Trash, Trash2 } from 'lucide-react'
 import React from 'react'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
 import { useTaskStore } from '@/store/useTaskStore'
 
-const Sidebar = ({addProject}:{addProject:(e:React.FormEvent)=>void}) => {
+const Sidebar = ({addProject, userId}:{addProject:(e:React.FormEvent)=>void, userId:string}) => {
     const { projects, setProjects,  selectedProject, setSelectedProject, newProject, setNewProject, projectsLoading } = useTaskStore()
+
+
+    const deleteProject = async(projectId: string) => {
+      if (!userId) return
+      const res = await fetch(`/api/projects/${projectId}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      })
+  
+      if (res.ok) {
+        setProjects(projects.filter(project => project.id !== projectId))
+      }
+    }
+
 
   return (
     <div className="w-64 bg-gray-100 p-4 overflow-y-auto">
@@ -19,12 +33,21 @@ const Sidebar = ({addProject}:{addProject:(e:React.FormEvent)=>void}) => {
         {projects.map((project) => (
           <li
             key={project.id}
-            className={`cursor-pointer p-2 rounded ${
+            className={`cursor-pointer p-2 rounded flex justify-between ${
               selectedProject === project.id ? 'bg-blue-200' : 'hover:bg-gray-200'
             }`}
             onClick={() => setSelectedProject(project.id)}
           >
             {project.name}
+
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => deleteProject(project.id)}
+              className="p-2 rounded-md hover:bg-red-100 text-red-500 transition-colors hover:text-red-500"
+            >
+              <Trash2 className="h-4 w-4"/>
+          </Button>
           </li>
         ))}
       </ul>
