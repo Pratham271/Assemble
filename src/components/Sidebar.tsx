@@ -1,4 +1,4 @@
-import { Loader, Trash, Trash2 } from 'lucide-react'
+import { Edit2, Loader, Trash, Trash2 } from 'lucide-react'
 import React from 'react'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
@@ -40,14 +40,24 @@ const Sidebar = ({addProject, userId}:{addProject:(e:React.FormEvent)=>void, use
           >
             {project.name}
 
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => deleteProject(project.id)}
-              className="p-2 rounded-md hover:bg-red-100 text-red-500 transition-colors hover:text-red-500"
-            >
-              <Trash2 className="h-4 w-4"/>
-          </Button>
+            <div className="flex justify-between">
+              <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => deleteProject(project.id)}
+                  className="p-2 rounded-md"
+                >
+                  <Edit2 className="h-4 w-4"/>
+              </Button>
+              <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => deleteProject(project.id)}
+                  className="p-2 rounded-md hover:bg-red-100 text-red-500 transition-colors hover:text-red-500"
+                >
+                  <Trash2 className="h-4 w-4"/>
+              </Button>
+            </div>
           </li>
         ))}
       </ul>
