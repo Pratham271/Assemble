@@ -14,4 +14,13 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
       where: { id: params.id },
     });
     return NextResponse.json(deletedProject);
-  }
+}
+
+export async function PATCH(request: Request, { params }: { params: { id: string } }) {
+  const body = await request.json();
+  const task = await prisma.project.update({
+    where: { id: params.id },
+    data: body,
+  });
+  return NextResponse.json(task);
+}
