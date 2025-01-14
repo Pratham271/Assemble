@@ -44,7 +44,7 @@ const Sidebar = ({addProject, userId}:{addProject:(e:React.FormEvent)=>void, use
               <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => deleteProject(project.id)}
+                  onClick={() => deleteProject(project.id)} 
                   className="p-2 rounded-md"
                 >
                   <Edit2 className="h-4 w-4"/>
