@@ -18,9 +18,12 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
 
 export async function PATCH(request: Request, { params }: { params: { id: string } }) {
   const body = await request.json();
+  console.log("body: ",body)
   const task = await prisma.project.update({
     where: { id: params.id },
-    data: body,
+    data: {
+      name: body.name
+    },
   });
   return NextResponse.json(task);
 }
