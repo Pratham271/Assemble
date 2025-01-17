@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Trash2, ChevronDown, ChevronUp } from 'lucide-react'
 import { useTaskStore } from '@/store/useTaskStore'
-import { AddTaskDialog } from './Tasks/AddTaskDialog'
+import { AddTaskDialog } from './Dialogs/AddTaskDialog'
 import Sidebar from './Sidebar'
 import { DatePickerDemo } from './ui/date-picker'
 
