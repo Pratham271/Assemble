@@ -1,8 +1,14 @@
-import { Check, Edit2, Loader, Trash2, X } from 'lucide-react'
+import { Check, Edit2, Loader, SquarePen, Trash2, X } from 'lucide-react'
 import React, { useState } from 'react'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
 import { useTaskStore } from '@/store/useTaskStore'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 const Sidebar = ({addProject, userId}:{addProject:(e:React.FormEvent)=>void, userId:string}) => {
   const { projects, setProjects, selectedProject, setSelectedProject, newProject, setNewProject, projectsLoading } = useTaskStore()
@@ -52,7 +58,26 @@ const Sidebar = ({addProject, userId}:{addProject:(e:React.FormEvent)=>void, use
 
   return (
     <div className="w-64 bg-gray-100 p-4 overflow-y-auto">
+      <div className="flex justify-between items-center align-middle text-center">
       <h2 className="text-xl font-semibold mb-4">Projects</h2>
+
+      <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <div className='hover:bg-gray-200 p-2 rounded-md'>
+            <SquarePen 
+              className='h-5 w-5 mb-2 hover:cursor-pointer' 
+              /> 
+          </div>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Create new project</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+        
+      
+    </div>
       {projectsLoading ? (
         <div className="flex justify-center items-center h-24">
           <Loader className="animate-spin" />
@@ -125,7 +150,7 @@ const Sidebar = ({addProject, userId}:{addProject:(e:React.FormEvent)=>void, use
           ))}
         </ul>
       )}
-      <div className="mt-4">
+      {/* <div className="mt-4">
         <h3 className="text-lg font-semibold mb-2">Add New Project</h3>
         <form onSubmit={addProject} className="space-y-2">
           <Input
@@ -136,7 +161,7 @@ const Sidebar = ({addProject, userId}:{addProject:(e:React.FormEvent)=>void, use
           />
           <Button type="submit">Add Project</Button>
         </form>
-      </div>
+      </div> */}
     </div>
   )
 }
