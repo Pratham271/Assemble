@@ -1,3 +1,4 @@
+'use client';
 import React from 'react'
 import { Button } from "@/components/ui/button"
 import {
@@ -19,8 +20,19 @@ import {
     TooltipTrigger,
   } from "@/components/ui/tooltip"
 import { SquarePen } from 'lucide-react'
+import { useTaskStore } from '@/store/useTaskStore'
+import { useSession } from 'next-auth/react';
 
 const AddProjectDialog = () => {
+    const {addProject, newProject, setNewProject} = useTaskStore() 
+    const session = useSession()
+  
+    const onSubmit = (e:React.FormEvent) => {
+        e.preventDefault()
+        // @ts-ignore
+        addProject(session.data?.user?.id)
+        
+    }
   return (
     <Dialog>
     <DialogTrigger asChild>
@@ -57,6 +69,8 @@ const AddProjectDialog = () => {
             id="name" 
             placeholder="Pedro Duarte" 
             className="col-span-3" 
+            value={newProject.name}
+            onChange={(e) => setNewProject({ name: e.target.value })}
           />
         </div>
       </div>
@@ -66,7 +80,7 @@ const AddProjectDialog = () => {
             Cancel
           </Button>
         </DialogClose>
-        <Button type="submit">Save</Button>
+        <Button onClick={onSubmit}>Save</Button>
       </DialogFooter>
     </DialogContent>
   </Dialog>

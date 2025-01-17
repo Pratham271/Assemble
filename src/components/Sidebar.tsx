@@ -6,7 +6,7 @@ import { useTaskStore } from '@/store/useTaskStore'
 import AddProjectDialog from './Dialogs/AddProjectDialog'
 
 
-const Sidebar = ({addProject, userId}:{addProject:(e:React.FormEvent)=>void, userId:string}) => {
+const Sidebar = ({userId}:{userId:string}) => {
   const { projects, setProjects, selectedProject, setSelectedProject, newProject, setNewProject, projectsLoading } = useTaskStore()
   const [editingProjectId, setEditingProjectId] = useState<string | null>(null)
   const [editedName, setEditedName] = useState("")
