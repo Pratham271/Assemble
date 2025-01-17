@@ -13,7 +13,7 @@ import { DatePickerDemo } from './ui/date-picker'
 
 export default function TaskManager({userId}: {userId:string}) {
   
-  const {tasks, setTasks, setProjectsLoading, setProjects, selectedProject, newProject, setNewProject, selectedDate } = useTaskStore() 
+  const {tasks, setTasks, selectedProject, selectedDate, fetchProjects } = useTaskStore() 
   const [newTask, setNewTask] = useState({ title: '', description: '' })
   const [expandedTasks, setExpandedTasks] = useState<string[]>([])
 
@@ -46,7 +46,7 @@ export default function TaskManager({userId}: {userId:string}) {
 
 
   useEffect(() => {
-    fetchProjects()
+    fetchProjects(userId)
   },[userId])
 
   const fetchTasks = async () => {
@@ -61,22 +61,22 @@ export default function TaskManager({userId}: {userId:string}) {
   }
 
 
-  const fetchProjects = async () => {
-    try {
-      if (!userId) return
-      setProjectsLoading(true)
-      const res = await fetch(`/api/projects?userId=${userId}`)
-      if (res.ok) {
-        const data = await res.json()
-        setProjects(data)
-      }
-    } catch (error) {
+  // const fetchProjects = async () => {
+  //   try {
+  //     if (!userId) return
+  //     setProjectsLoading(true)
+  //     const res = await fetch(`/api/projects?userId=${userId}`)
+  //     if (res.ok) {
+  //       const data = await res.json()
+  //       setProjects(data)
+  //     }
+  //   } catch (error) {
       
-    }
-    finally{
-      setProjectsLoading(false)
-    }
-  }
+  //   }
+  //   finally{
+  //     setProjectsLoading(false)
+  //   }
+  // }
 
   
 
@@ -117,25 +117,25 @@ export default function TaskManager({userId}: {userId:string}) {
 
 
 
-  const addProject = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!newProject.name || !userId) return
-    const res = await fetch('/api/projects', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        projectData:newProject,
-        userId
-      }),
+  // const addProject = async (e: React.FormEvent) => {
+  //   e.preventDefault()
+  //   if (!newProject.name || !userId) return
+  //   const res = await fetch('/api/projects', {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({
+  //       projectData:newProject,
+  //       userId
+  //     }),
    
-    })
+  //   })
   
-    if (res.ok) {
-      setNewProject({ name: '' })
-      fetchProjects()
-    }
+  //   if (res.ok) {
+  //     setNewProject({ name: '' })
+  //     fetchProjects()
+  //   }
    
-  }
+  // }
 
   const deleteTask = async (taskId: string) => {
     if (!userId) return
@@ -152,7 +152,7 @@ export default function TaskManager({userId}: {userId:string}) {
 
   return (
     <div className="flex h-screen">
-      <Sidebar addProject={addProject} userId={userId}/>
+      <Sidebar userId={userId}/>
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="col-span-3">
