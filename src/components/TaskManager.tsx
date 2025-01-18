@@ -4,7 +4,7 @@ import { format } from 'date-fns'
 import { Calendar } from '@/components/ui/calendar'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Trash2, ChevronDown, ChevronUp } from 'lucide-react'
+import { Trash2, ChevronDown, ChevronUp, Pencil } from 'lucide-react'
 import { useTaskStore } from '@/store/useTaskStore'
 import { AddTaskDialog } from './Dialogs/AddTaskDialog'
 import Sidebar from './Sidebar'
@@ -178,6 +178,14 @@ export default function TaskManager({userId}: {userId:string}) {
                             <ChevronUp className="h-4 w-4" /> : 
                             <ChevronDown className="h-4 w-4" />
                           }
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => {/* Add edit functionality here */}}
+                          className="p-2 rounded-md hover:bg-blue-100 text-blue-500 transition-colors hover:text-blue-600"
+                        >
+                          <Pencil className="h-4 w-4"/>
                         </Button>
                         <Button
                           variant="ghost"
