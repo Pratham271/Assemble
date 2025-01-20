@@ -9,6 +9,7 @@ import { useTaskStore } from '@/store/useTaskStore'
 import { AddTaskDialog } from './Dialogs/AddTaskDialog'
 import Sidebar from './Sidebar'
 import { DatePickerDemo } from './ui/date-picker'
+import EditTaskDialog from './Dialogs/EditTaskDialog'
 
 
 export default function TaskManager({userId}: {userId:string}) {
@@ -179,14 +180,7 @@ export default function TaskManager({userId}: {userId:string}) {
                             <ChevronDown className="h-4 w-4" />
                           }
                         </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => {/* Add edit functionality here */}}
-                          className="p-2 rounded-md hover:bg-blue-100 text-blue-500 transition-colors hover:text-blue-600"
-                        >
-                          <Pencil className="h-4 w-4"/>
-                        </Button>
+                        <EditTaskDialog/>
                         <Button
                           variant="ghost"
                           size="sm"
